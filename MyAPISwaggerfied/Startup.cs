@@ -26,6 +26,8 @@ namespace MyAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            // Register Swagger generator
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +39,17 @@ namespace MyAPI
             }
 
             app.UseHttpsRedirection();
+
+            // enable middleware to serve generated Swagger as a JSON endpoint
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyAPI V1");
+                c.RoutePrefix = string.Empty;
+
+            }
+            );
 
             app.UseRouting();
 
